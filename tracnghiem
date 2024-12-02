@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trắc Nghiệm</title>
+    <style>
+        /* Tổng quan trang */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Tiêu đề */
+        h1 {
+            background-color: #007BFF;
+            color: white;
+            width: 100%;
+            text-align: center;
+            padding: 20px 0;
+            margin: 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Vùng câu hỏi */
+        #quiz {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 600px;
+            width: 90%;
+            margin-top: 20px;
+        }
+
+        .question {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .question:last-child {
+            border-bottom: none;
+        }
+
+        .question p {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0 0 10px;
+        }
+
+        .answers label {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .answers input {
+            margin-right: 10px;
+        }
+
+        /* Nút nộp bài */
+        button {
+            display: inline-block;
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        /* Kết quả */
+        .result {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #17a2b8;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Trắc Nghiệm KANJI CHƯƠNG 1</h1>
+    <div id="quiz">
+        <!-- Các câu hỏi sẽ được chèn ở đây bằng JavaScript -->
+    </div>
+    <button onclick="calculateScore()">Nộp bài</button>
+    <div class="result" id="result"></div>
+    
+    <script>
+        // Dữ liệu câu hỏi
+        const questions = [
+            {
+                question: "Câu 1: 1.井戶",
+                answers: ["いど", "いどう", "いいどう", "いいど"],
+                correct: 1 // Đáp án đúng là いど (chỉ số 1)
+            },
+            {
+                question: "Câu 2: 2 + 2 bằng bao nhiêu?",
+                answers: ["3", "4", "5", "6"],
+                correct: 1 // Đáp án đúng là 4
+            },
+            {
+                question: "Câu 3: Màu của bầu trời là gì?",
+                answers: ["Xanh", "Đỏ", "Vàng", "Tím"],
+                correct: 0 // Đáp án đúng là Xanh
+            }
+        ];
+
+        // Hiển thị câu hỏi
+        const quizContainer = document.getElementById("quiz");
+
+        function loadQuiz() {
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement("div");
+                questionDiv.classList.add("question");
+
+                // Thêm câu hỏi
+                const questionText = document.createElement("p");
+                questionText.textContent = q.question;
+                questionDiv.appendChild(questionText);
+
+                // Thêm các đáp án
+                const answersDiv = document.createElement("div");
+                answersDiv.classList.add("answers");
+                q.answers.forEach((answer, i) => {
+                    const label = document.createElement("label");
+                    label.innerHTML = `
+                        <input type="radio" name="question-${index}" value="${i}">
+                        ${answer}
+                    `;
+                    answersDiv.appendChild(label);
+                });
+                questionDiv.appendChild(answersDiv);
+
+                quizContainer.appendChild(questionDiv);
+            });
+        }
+
+        // Tính điểm
+        function calculateScore() {
+            let score = 0;
+            questions.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="question-${index}"]:checked`);
+                if (selected && parseInt(selected.value) === q.correct) {
+                    score++;
+                }
+            });
+
+            const resultDiv = document.getElementById("result");
+            resultDiv.textContent = `Bạn đã trả lời đúng ${score}/${questions.length} câu.`;
+        }
+
+        // Gọi hàm loadQuiz khi tải trang
+        loadQuiz();
+    </script>
+</body>
+</html>
